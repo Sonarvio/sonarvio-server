@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "dataserver",
   "description": "Providing an API to use 3rd party services at the website and the extension.",
   "version": "0.3.0",
   "author": "Stefan Dühring | Autarc <autarc@gmail.com>",

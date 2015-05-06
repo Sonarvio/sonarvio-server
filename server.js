@@ -2,7 +2,7 @@
  * Server
  * ======
  *
- * Webserver handling the routes.
+ * Webserver handling the routes requesting data.
  */
 
 import Hapi from 'hapi'

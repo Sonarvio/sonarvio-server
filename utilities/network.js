@@ -2,7 +2,7 @@
  * Network
  * =======
  *
- *
+ * Helper for async communication.
  */
 
 import Promise from 'bluebird'
