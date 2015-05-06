@@ -27,7 +27,14 @@ server.register([], function (err) {
     method: 'GET',
     path: '/text/lyrics/{text}',
     handler (req, reply) {
-      lyrics(req.params.text)
+      var params = req.params
+      var service = null
+      switch (params.service) {
+        case 'lyrics':
+        default:
+          service = lyrics
+      }
+      service(params.text)
         .then(digimeo)
           .then(reply)
           .catch(reply)
@@ -38,7 +45,14 @@ server.register([], function (err) {
     method: 'GET',
     path: '/audio/chromaprints/{code}',
     handler (req, reply) {
-      acoustid(req.params.code)
+      var params = req.params
+      var service = null
+      switch (params.service) {
+        case 'acoustid':
+        default:
+          service = acoustid
+      }
+      service(req.params.code)
         .then(digimeo)
           .then(reply)
           .catch(reply)
@@ -49,7 +63,14 @@ server.register([], function (err) {
     method: 'GET',
     path: '/audio/echoprints/{code}',
     handler (req, reply) {
-      mooma(req.params.code)
+      var params = req.params
+      var service = null
+      switch (params.service) {
+        case 'mooma':
+        default:
+          service = mooma
+      }
+      service(params.code)
         .then(digimeo)
           .then(reply)
           .catch(reply)
