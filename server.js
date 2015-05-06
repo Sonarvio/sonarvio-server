@@ -27,26 +27,32 @@ server.register([], function (err) {
     method: 'GET',
     path: '/text/lyrics/{text}',
     handler (req, reply) {
-      // lyrics(req.params.text).then(digimeo).then((suggestions) => reply(suggestions))
-      lyrics(req.params.text).then(digimeo).then(reply)
+      lyrics(req.params.text)
+        .then(digimeo)
+          .then(reply)
+          .catch(reply)
     }
   })
 
   server.route({
     method: 'GET',
-    path: '/audio/chromaprint/{code}',
+    path: '/audio/chromaprints/{code}',
     handler (req, reply) {
-      // acoustid(req.params.code).then(digimeo).then((suggestions) => reply(suggestions))
-      acoustid(req.params.code).then(digimeo).then(reply)
+      acoustid(req.params.code)
+        .then(digimeo)
+          .then(reply)
+          .catch(reply)
     }
   })
 
   server.route({
     method: 'GET',
-    path: '/text/echoprint/{code}',
+    path: '/audio/echoprints/{code}',
     handler (req, reply) {
-      // mooma(req.params.code).then(digimeo).then((suggestions) => reply(suggestions))
-      mooma(req.params.code).then(digimeo).then(reply)
+      mooma(req.params.code)
+        .then(digimeo)
+          .then(reply)
+          .catch(reply)
     }
   })
 
