@@ -7,8 +7,8 @@
  * Service: http://www.digimeo.de
  */
 
-import Promise from 'bluebird'
-import {getData} from '../utilities/network'
+import { getJSON } from '../utilities/network'
+
 
 /**
  * [digimeo description]
@@ -17,29 +17,31 @@ import {getData} from '../utilities/network'
  * @param  {[type]} count   [description]
  * @return {[type]}         [description]
  */
-export default function digimeo (matches, count = null) {
+export default (matches, count = null) => {
   if (Array.isArray(matches)) {
     count = 1
   } else {
     matches = [matches]
   }
-  return Promise.map(matches, function (match) {
-    return getData('https://www.digimeo.de/api/v1/search/music', {
-      count,
+  return Promise.all(matches.map((match) => {
+    return getJSON('https://www.digimeo.de/api/v1/search/music', {
       types: 'song',
-      q: `${match.artist} ${match.title}`
-    }).then(function (body) {
+      q: `${match.artist} ${match.title}`,
+      count
+    }).then((body) => {
       var data = null
       // TODO:
       // - currently got 2 ways of returning 0 matches, pick one and fix the other !
       // []
       if (!body.results[0]) {
-        console.error('MISSING RESULTS', match, body)
+        // console.error('MISSING RESULTS', match, body)
+        return null
       }
       // [{category: 'music', products: [] }]
       if (body.results[0] && body.results[0].products.length) {
         data = body.results[0].products[0]
         data = {
+          ...match,
           link: `https://www.digimeo.de/detail/music/${data.general.id}`,
           title: data.general.title,
           cover: data.general.image,
@@ -48,10 +50,11 @@ export default function digimeo (matches, count = null) {
           preview: data.specific.preview
         }
       }
-      return Promise.resolve(data)
+      return data
     })
-  }).then(function (results) {
-    results = results.filter(function (result, i, arr) {
+  }))
+  .then((results) => {
+    results = results.filter((result, i, arr) => {
       return result
       // TODO:
       // - prevent duplicates
@@ -59,6 +62,6 @@ export default function digimeo (matches, count = null) {
       //   return prev.link === result.link
       // }) === -1
     })
-    return Promise.resolve(results)
+    return results
   })
 }

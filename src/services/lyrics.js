@@ -7,8 +7,10 @@
  * Service: http://www.lyrics.net
  */
 
-import cheerio from 'cheerio';
-import {getData} from '../utilities/network'
+import cheerio from 'cheerio'
+
+import { getRAW } from '../utilities/network'
+
 
 /**
  * [lyrics description]
@@ -16,14 +18,14 @@ import {getData} from '../utilities/network'
  * @param  {[type]} text [description]
  * @return {[type]}      [description]
  */
-export default function lyrics (text) {
-  return getData(`http://www.lyrics.net/lyrics/${text}`).then(function (body) {
-    var $ = cheerio.load(body)
-    var matches = $('#content-body .sec-lyric').map(function () {
-      var $lyric = $(this)
+export default (query) => {
+  return getRAW(`http://www.lyrics.net/lyrics/${query}`).then((body) => {
+    const $ = cheerio.load(body)
+    var matches = $('#content-body .sec-lyric').map((i, el) => {
+      const $lyric = $(el)
       return {
-        title: $lyric.find('.lyric-meta-title').text(),
-        artist: $lyric.find('.lyric-meta-artists').text()
+        artist: $lyric.find('.lyric-meta-artists').text(),
+        title: $lyric.find('.lyric-meta-title').text()
       }
     }).get()
     // TODO:
@@ -33,6 +35,6 @@ export default function lyrics (text) {
     //     return entry.artist.toLowerCase() === match.artist.toLowerCase();
     //   });
     // });
-    return Promise.resolve(matches)
+    return matches
   })
 }
