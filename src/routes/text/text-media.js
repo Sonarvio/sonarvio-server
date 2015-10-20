@@ -10,19 +10,25 @@ import tunefind from '../../services/tunefind'
 import digimeo from '../../services/digimeo'
 
 
+/**
+ * [default description]
+ *
+ * @param  {[type]} server [description]
+ * @return {[type]}        [description]
+ */
 export default (server) => {
 	server.route({
 		method: 'GET',
 		path: '/text/media',
 		handler (req, reply) {
-			const { format, title, season, episode } = req.query
-			if (!format) {
-				return reply(new Error('Missing query parameter "format"!'))
+			const { type, query: title, season, episode } = req.query
+			if (!type) {
+				return reply(new Error('Missing query parameter "type"!'))
 			}
-			if (!title) {
-				return reply(new Error('Missing query parameter "title"!'))
+			if (!title) { // alias
+				return reply(new Error('Missing query parameter "query"!'))
 			}
-			return tunefind({	format, title, season, episode }).then(digimeo).then(reply).catch((err) => {
+			return tunefind({	type, title, season, episode }).then(digimeo).then(reply).catch((err) => {
 				console.error(err)
 				reply(err)
 			})
