@@ -1,9 +1,10 @@
 {
   "name": "sonarvio-server",
   "description": "Providing an API to use 3rd party services at the website and extension.",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "author": "Stefan Dühring | Autarc <autarc@gmail.com>",
   "dependencies": {
+    "babel": "^5.8.23",
     "babel-runtime": "^5.8.25",
     "cheerio": "^0.19.0",
     "got": "^4.2.0",

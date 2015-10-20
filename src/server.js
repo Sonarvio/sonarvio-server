@@ -5,6 +5,8 @@
  * Webserver handling the routes requesting data.
  */
 
+import 'babel/polyfill'
+
 import { Server } from 'hapi'
 
 const routes = [
